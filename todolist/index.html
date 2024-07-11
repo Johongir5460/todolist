@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #todoContainer {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+
+      #todoInput {
+        padding: 10px;
+        width: calc(100% - 22px);
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 10px 20px;
+        width: 100%;
+        background: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #218838;
+      }
+
+      #todoList {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      #todoList li {
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-top: 5px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .deleteButton {
+        background: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .deleteButton:hover {
+        background: #c82333;
+      }
+    </style>
+    <title>TODO List</title>
+  </head>
+  <body>
+    <div id="todoContainer">
+      <input
+        type="text"
+        id="todoInput"
+        placeholder="Yangi ish nomini kiriting"
+      />
+      <button onclick="addTodo()">Qo'shish</button>
+      <ul id="todoList"></ul>
+    </div>
+
+    <script>
+      const todos = [];
+
+      function renderTodos() {
+        const todoList = document.getElementById("todoList");
+        todoList.innerHTML = ""; // Tozalash
+
+        todos.forEach((todo, index) => {
+          const li = document.createElement("li");
+          li.textContent = `${todo.name} - ${todo.createdTime}`;
+
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "O'chirish";
+          deleteButton.classList.add("deleteButton");
+          deleteButton.onclick = () => {
+            todos.splice(index, 1);
+            renderTodos();
+          };
+
+          li.appendChild(deleteButton);
+          todoList.appendChild(li);
+        });
+      }
+
+      function addTodo() {
+        const todoName = document.getElementById("todoInput").value;
+        const currentTime = new Date();
+
+        if (todoName.trim() === "") {
+          alert("Iltimos, biror nima kiriting!");
+          return;
+        }
+
+        const todo = {
+          name: todoName,
+          createdTime: `${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}`,
+        };
+
+        todos.push(todo);
+        document.getElementById("todoInput").value = "";
+        renderTodos();
+      }
+    </script>
+  </body>
+</html>
